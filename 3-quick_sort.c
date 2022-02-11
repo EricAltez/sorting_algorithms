@@ -13,12 +13,18 @@ void swap(int *a, int *b)
 }
 
 /* function to find the partition position */
-
+/**
+ *partition - asd
+ *@array: array to be sorted
+ *@low: asd
+ *@high: asd
+ *@size: size
+ *Return: 0
+ */
 int partition(int *array, int low, int high, size_t size)
 {
 	/* select the rightmost element as pivot */
 	int pivot = array[high];
-
 	/* pointer for greater element */
 	int i = (low - 1), j = 0;
 
@@ -34,20 +40,22 @@ int partition(int *array, int low, int high, size_t size)
 
 			/* swap element at i with element at j */
 			swap(&array[i], &array[j]);
+			if (array[i] != array[j])
+				print_array(array, size);
 		}
-	}
 
+	}
+	print_array(array, size);
 	/* swap the pivot element with the greater element at i */
 	swap(&array[i + 1], &array[high]);
-
 	/* return the partition point */
 	return (i + 1);
 }
 /**
  *quicksort - recursive sorting function
  *@array: array to be sorted
- *@low:
- *@high:
+ *@low: asd
+ *@high: asd
  *@size: size
  */
 void quicksort(int *array, int low, int high, size_t size)
@@ -72,7 +80,11 @@ void quicksort(int *array, int low, int high, size_t size)
 		quicksort(array, pivot + 1, high, size);
 	}
 }
-
+/**
+ *quick_sort - aux sort function
+ *@array: array to be sorted
+ *@size: size
+ */
 void quick_sort(int *array, size_t size)
 {
 	/* perform quicksort on data */
