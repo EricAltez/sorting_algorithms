@@ -24,13 +24,14 @@ void swap(int *a, int *b)
 int partition(int *array, int low, int high, size_t size)
 {
 	/* select the rightmost element as pivot */
-	int pivot = array[high];
 	/* pointer for greater element */
-	int i = (low - 1), j = 0;
+
+	int i, pivot = array[high], j;
 
 	/* traverse each element of the array */
 	/* compare them with the pivot */
-	for (j = low; j < high; j++)
+
+	for (j = low, i = low - 1 ; j < high; j++)
 	{
 		if (array[j] <= pivot)
 		{
@@ -45,20 +46,22 @@ int partition(int *array, int low, int high, size_t size)
 		}
 
 	}
-	print_array(array, size);
+
 	/* swap the pivot element with the greater element at i */
 	swap(&array[i + 1], &array[high]);
+	if (array[high] != array[i + 1])
+		print_array(array, size);
 	/* return the partition point */
 	return (i + 1);
 }
 /**
- *quicksort - recursive sorting function
+ *sortquick - recursive sorting function
  *@array: array to be sorted
  *@low: asd
  *@high: asd
  *@size: size
  */
-void quicksort(int *array, int low, int high, size_t size)
+void sortquick(int *array, int low, int high, size_t size)
 {
 	int pivot;
 
@@ -73,11 +76,11 @@ void quicksort(int *array, int low, int high, size_t size)
 
 		/* recursive call on the left of pivot */
 
-		quicksort(array, low, pivot - 1, size);
+		sortquick(array, low, pivot - 1, size);
 
 		/* recursive call on the right of pivot */
 
-		quicksort(array, pivot + 1, high, size);
+		sortquick(array, pivot + 1, high, size);
 	}
 }
 /**
@@ -88,5 +91,5 @@ void quicksort(int *array, int low, int high, size_t size)
 void quick_sort(int *array, size_t size)
 {
 	/* perform quicksort on data */
-	quicksort(array, 0, size - 1, size);
+	sortquick(array, 0, size - 1, size);
 }
