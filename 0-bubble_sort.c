@@ -3,7 +3,7 @@
 /**
  *bubble_sort - sort using bobble method
  *@array: array to be sorted
- *@size: size of the array
+ *@size: size
  */
 void bubble_sort(int *array, size_t size)
 {

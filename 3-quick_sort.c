@@ -14,12 +14,12 @@ void swap(int *a, int *b)
 
 /* function to find the partition position */
 /**
- *partition - asd
+ *partition - partition to sort
  *@array: array to be sorted
- *@low: asd
- *@high: asd
+ *@low: lower value
+ *@high: high value
  *@size: size
- *Return: 0
+ *Return: int
  */
 int partition(int *array, int low, int high, size_t size)
 {
@@ -57,8 +57,8 @@ int partition(int *array, int low, int high, size_t size)
 /**
  *sortquick - recursive sorting function
  *@array: array to be sorted
- *@low: asd
- *@high: asd
+ *@low: low value
+ *@high: high value
  *@size: size
  */
 void sortquick(int *array, int low, int high, size_t size)
@@ -84,7 +84,7 @@ void sortquick(int *array, int low, int high, size_t size)
 	}
 }
 /**
- *quick_sort - aux sort function
+ *quick_sort - entry point
  *@array: array to be sorted
  *@size: size
  */
