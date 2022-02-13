@@ -1,4 +1,5 @@
 #include "sort.h"
+#include <stdio.h>
 
 /**
  * insertion_sort_list - sorts a linked list with the Insert Sort algorithm
@@ -6,31 +7,31 @@
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *insert, *move;
+	listint_t *right, *left;
 
 	if (!list || !(*list) || !(*list)->next)
 		return;
 
-	insert = *list;
-	while (insert)
+	right = *list;
+	while (right)
 	{
-		move = insert;
-		while (move->prev && move->n < move->prev->n)
+		left = right;
+		while (left->prev && left->n < left->prev->n)
 		{
-			move->prev->next = move->next;
-			if (move->next)
+			left->prev->next = left->next;
+			if (left->next)
 			{
-				move->next->prev = move->prev;
+				left->next->prev = left->prev;
 			}
-			move->next = move->prev;
-			move->prev = move->prev->prev;
-			move->next->prev = move;
-			if (!move->prev)
-				*list = move;
+			left->next = left->prev;
+			left->prev = left->prev->prev;
+			left->next->prev = left;
+			if (!left->prev)
+				*list = left;
 			else
-				move->prev->next = move;
+				left->prev->next = left;
 			print_list(*list);
 		}
-		insert = insert->next;
+		right = right->next;
 	}
 }
