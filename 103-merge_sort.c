@@ -1,64 +1,70 @@
-#include "sort.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "sort.h"
 
-/*
- * void merge - function...
- * @arr: int
- * @l: int
- * @m: int
- * @r: int
+/**
+ * merge - merge left side with right side
+ * @array: unsorted array of integer and result
+ * @helper: copy of the part we want to sort of array
+ * @low: low limit of the unsorted block of array
+ * @middle: separation between 2 block, it is in left side
+ * @high: high limit of the unsorted block of array
  *
- * Merges two subarrays of arr[].
- * First subarray is arr[l..m]
- * Second subarray is arr[m+1..r]
+ * Return: void
  */
-void merge(int arr[], int l, int m, int r)
+void merge(int *array, int *helper, int low, int middle, int high)
 {
-	int i, j, k;
-	int n1 = m - l + 1;
-	int n2 = r - m;
+	int helperLeft = low, helperRight = middle + 1, current = low;
+	int i, current_print;
 
-	/* create temp arrays */
-	int izq = int izq[n1];
-	int der = int der[n2];
+	/* create a strdup of the array in helper */
+	for (i = low; i <= high; i++)
+		helper[i] = array[i];
 
-	/* Copy data to temp arrays L[] and R[] */
-	for (i = 0; i < n1; i++)
-		izq[i] = arr[l + i];
-	for (j = 0; j < n2; j++)
-		der[j] = arr[m + 1 + j];
-
-	/* Merge the temp arrays back into arr[l..r]*/
-	i = 0; /* Initial index of first subarray*/
-	j = 0; /* Initial index of second subarray*/
-	k = l; /* Initial index of merged subarray*/
-	while (i < n1 && j < n2) {
-		if (izq[i] <= der[j]) {
-			arr[k] = izq[i];
-			i++;
+	printf("Merging...\n");
+	printf("[left]: ");
+	print_array(array + helperLeft, helperRight - helperLeft);
+	printf("[right]: ");
+	print_array(array + helperRight, high + 1 - helperRight);
+	/* Iterate through helper array */
+	/* compare between left part and right part */
+	/* copy the sorted order in the array */
+	current_print = current;
+	while (helperLeft <= middle || helperRight <= high)
+	{
+		if (helperLeft <= middle && helperRight <= high)
+		{
+			if (helper[helperLeft] <= helper[helperRight])
+				array[current] = helper[helperLeft], current++, helperLeft++;
+			else
+				array[current] = helper[helperRight], current++, helperRight++;
 		}
-		else {
-			arr[k] = der[j];
-			j++;
-		}
-		k++;
+		else if (helperLeft >= middle && helperRight <= high)
+			array[current] = helper[helperRight], current++, helperRight++;
+		else
+			array[current] = helper[helperLeft], current++, helperLeft++;
 	}
+	printf("[Done]: ");
+	print_array(array + current_print, high + 1 - low);
+}
 
-	/* Copy the remaining elements of L[], if there
-	are any */
-	while (i < n1) {
-		arr [k] = izq[i];
-		i++;
-		k++;
-	}
+/**
+ * merge_recursion - recursive function that merge sorts an array
+ * @arr: copy array
+ * @array: array to merge sort
+ * @left: index of the left element
+ * @right: index of the right element
+ */
+void merge_recursion(int *arr, int *array, size_t left, size_t right)
+{
+	size_t middle;
 
-	/* Copy the remaining elements of R[], if there
-	are any */
-	while (j < n2) {
-		arr[k] = der[j];
-		j++;
-		k++;
+	if (right - left > 1)
+	{
+		middle = (right - left) / 2 + left;
+		merge_recursion(arr, array, left, middle);
+		merge_recursion(arr, array, middle, right);
+		merge(arr, array, left, middle, right);
 	}
 }
 
@@ -76,21 +82,6 @@ void merge_sort(int *array, size_t size)
 
 	arr = malloc(sizeof(int) * size);
 
-	merge(arr, int *, 0, size);
+	merge_recursion(arr, array, 0, size);
 	free(arr);
-}
-
-/* UTILITY FUNCTIONS */
-/* Function to print an array */
-/*
- * printArray - it prints an array
- *@a: int
- *@size: int
- */
-void printArray(int a[], int size)
-{
-	int i;
-	for (i = 0; i < size; i++)
-		printf("%d ", a[i]);
-	printf("\n");
 }
