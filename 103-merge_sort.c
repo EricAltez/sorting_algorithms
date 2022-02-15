@@ -2,7 +2,16 @@
 #include <stdlib.h>
 #include "sort.h"
 
-
+/**
+ * merge - Auxiliar function for
+ * Merge sort algorithm
+ * @arr: array
+ * @low: low index
+ * @middle: middle
+ * @high: high index
+ * @helper: integer
+ * Return: void
+ */
 void merge(int *arr, int *helper, size_t low, size_t middle, size_t high)
 {
 	size_t i, j, k = 0;
@@ -34,11 +43,11 @@ void merge(int *arr, int *helper, size_t low, size_t middle, size_t high)
 }
 
 /**
- * merge_recursion - recursive function that merge sorts an array
+ * merge_split - recursive function that merge sorts an array
  * @arr: copy array
- * @array: array to merge sort
- * @left: index of the left element
- * @right: index of the right element
+ * @helper: array to merge sort
+ * @low: index of the left element
+ * @high: index of the right element
  */
 void merge_split(int *arr, int *helper, size_t low, size_t high)
 {
