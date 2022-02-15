@@ -2,50 +2,35 @@
 #include <stdlib.h>
 #include "sort.h"
 
-/**
- * merge - merge left side with right side
- * @array: unsorted array of integer and result
- * @helper: copy of the part we want to sort of array
- * @low: low limit of the unsorted block of array
- * @middle: separation between 2 block, it is in left side
- * @high: high limit of the unsorted block of array
- *
- * Return: void
- */
-void merge(int *array, int *helper, int low, int middle, int high)
-{
-	int helperLeft = low, helperRight = middle + 1, current = low;
-	int i, current_print;
 
-	/* create a strdup of the array in helper */
-	for (i = low; i <= high; i++)
-		helper[i] = array[i];
+void merge(int *arr, int *helper, size_t low, size_t middle, size_t high)
+{
+	size_t i, j, k = 0;
 
 	printf("Merging...\n");
 	printf("[left]: ");
-	print_array(array + helperLeft, helperRight - helperLeft);
+	print_array(helper + low, middle  - low);
 	printf("[right]: ");
-	print_array(array + helperRight, high + 1 - helperRight);
-	/* Iterate through helper array */
-	/* compare between left part and right part */
-	/* copy the sorted order in the array */
-	current_print = current;
-	while (helperLeft <= middle || helperRight <= high)
+	print_array(helper + middle, high - middle);
+
+	for (i = low, j = middle; i < middle && j < high; k++)
 	{
-		if (helperLeft <= middle && helperRight <= high)
-		{
-			if (helper[helperLeft] <= helper[helperRight])
-				array[current] = helper[helperLeft], current++, helperLeft++;
-			else
-				array[current] = helper[helperRight], current++, helperRight++;
-		}
-		else if (helperLeft >= middle && helperRight <= high)
-			array[current] = helper[helperRight], current++, helperRight++;
+		if (helper[i] < helper[j])
+			arr[k] = helper[i++];
 		else
-			array[current] = helper[helperLeft], current++, helperLeft++;
+			arr[k] = helper[j++];
 	}
+
+	while (i < middle)
+		arr[k++] = helper[i++];
+	while (j < high)
+		arr[k++] = helper[j++];
+
+	for (k = low, i = 0; k < high; k++)
+		helper[k] = arr[i++];
+
 	printf("[Done]: ");
-	print_array(array + current_print, high + 1 - low);
+	print_array(helper + low, high - low);
 }
 
 /**
@@ -55,16 +40,16 @@ void merge(int *array, int *helper, int low, int middle, int high)
  * @left: index of the left element
  * @right: index of the right element
  */
-void merge_recursion(int *arr, int *array, size_t left, size_t right)
+void merge_split(int *arr, int *helper, size_t low, size_t high)
 {
 	size_t middle;
 
-	if (right - left > 1)
+	if (high - low > 1)
 	{
-		middle = (right - left) / 2 + left;
-		merge_recursion(arr, array, left, middle);
-		merge_recursion(arr, array, middle, right);
-		merge(arr, array, left, middle, right);
+		middle = (high - low) / 2 + low;
+		merge_split(arr, helper, low, middle);
+		merge_split(arr, helper, middle, high);
+		merge(arr, helper, low, middle, high);
 	}
 }
 
@@ -82,6 +67,6 @@ void merge_sort(int *array, size_t size)
 
 	arr = malloc(sizeof(int) * size);
 
-	merge_recursion(arr, array, 0, size);
+	merge_split(arr, array, 0, size);
 	free(arr);
 }
